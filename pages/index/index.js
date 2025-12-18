@@ -5,6 +5,7 @@
 
 const paletteData = require('../../data/palettes');
 const colorUtil = require('../../utils/color');
+const app = getApp();
 
 Page({
   data: {
@@ -23,7 +24,12 @@ Page({
     detailPalette: null
   },
 
-  onLoad() {
+  onLoad(options) {
+    // 处理 URL 参数（如从分享链接进入）
+    if (options.paletteId) {
+      this.handleSharedPalette(options.paletteId);
+    }
+
     this.loadPalettes();
   },
 
@@ -33,9 +39,30 @@ Page({
       this.getTabBar().setData({ selected: 0 });
     }
 
+    // 检查是否有跨页面传递的色彩探索请求
+    const pendingColor = app.consumePendingColorExplore();
+    if (pendingColor) {
+      this.onColorClick({ detail: { color: pendingColor } });
+      return;
+    }
+
     // 刷新收藏状态
     if (this.data.palettes.length > 0) {
       this.setData({ palettes: [...this.data.palettes] });
+    }
+  },
+
+  // 处理分享链接中的配色方案
+  handleSharedPalette(paletteId) {
+    const palette = paletteData.getPaletteById(paletteId);
+    if (palette) {
+      // 显示该配色方案的详情
+      setTimeout(() => {
+        this.setData({
+          showDetail: true,
+          detailPalette: palette
+        });
+      }, 500);
     }
   },
 
@@ -45,7 +72,7 @@ Page({
 
     this.setData({ loading: true });
 
-    // 模拟加载延迟
+    // 短延迟确保 UI 响应（实际项目接入 API 后可移除）
     setTimeout(() => {
       let allPalettes;
 
@@ -70,7 +97,7 @@ Page({
         loading: false,
         refreshing: false
       });
-    }, 500);
+    }, 100);
   },
 
   // 氛围筛选变化

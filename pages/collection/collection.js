@@ -46,17 +46,12 @@ Page({
   onColorClick(e) {
     const { color } = e.detail;
 
-    // 跳转到首页并触发色彩探索
+    // 使用全局数据传递，首页 onShow 时会检查
+    app.setPendingColorExplore(color);
+
+    // 跳转到首页
     wx.switchTab({
-      url: '/pages/index/index',
-      success: () => {
-        // 通过事件通知首页
-        const pages = getCurrentPages();
-        const indexPage = pages.find(p => p.route === 'pages/index/index');
-        if (indexPage) {
-          indexPage.onColorClick({ detail: { color } });
-        }
-      }
+      url: '/pages/index/index'
     });
   },
 

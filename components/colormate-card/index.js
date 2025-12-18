@@ -34,8 +34,9 @@ Component({
   data: {
     isCollected: false,
     imageLoaded: false,
+    imageError: false,
     animateClass: '',
-    defaultImage: '/images/placeholder.jpg'
+    defaultImage: '/images/placeholder.svg'
   },
 
   lifetimes: {
@@ -131,14 +132,14 @@ Component({
 
     // 图片加载完成
     onImageLoad() {
-      this.setData({ imageLoaded: true });
+      this.setData({ imageLoaded: true, imageError: false });
     },
 
     // 图片加载失败
     onImageError() {
       this.setData({
-        imageLoaded: true
-        // 保持使用默认占位图
+        imageLoaded: true,
+        imageError: true
       });
     }
   }
