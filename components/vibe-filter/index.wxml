@@ -1,0 +1,22 @@
+<!-- Vibe Filter 氛围滤镜组件 -->
+<view class="vibe-filter">
+  <scroll-view
+    class="filter-scroll"
+    scroll-x="{{true}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+  >
+    <view class="filter-list">
+      <view
+        wx:for="{{filters}}"
+        wx:key="value"
+        class="filter-item {{current === item.value ? 'active' : ''}}"
+        data-value="{{item.value}}"
+        bindtap="onFilterTap"
+      >
+        <text class="filter-icon">{{item.icon}}</text>
+        <text class="filter-label">{{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

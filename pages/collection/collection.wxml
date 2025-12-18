@@ -1,0 +1,75 @@
+<!-- 收藏页面 -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">我的配方库</text>
+    <text class="subtitle">收藏的配色方案 ({{collections.length}})</text>
+  </view>
+
+  <!-- 收藏列表 -->
+  <scroll-view
+    class="collection-scroll"
+    scroll-y="{{true}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+    wx:if="{{collections.length > 0}}"
+  >
+    <view class="collection-list">
+      <colormate-card
+        wx:for="{{collections}}"
+        wx:key="id"
+        palette="{{item}}"
+        index="{{index}}"
+        animate="{{true}}"
+        bindcardtap="onCardTap"
+        bindcolorclick="onColorClick"
+        bindcollectchange="onCollectChange"
+      />
+    </view>
+
+    <!-- 底部安全区 -->
+    <view class="safe-bottom"></view>
+  </scroll-view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{collections.length === 0}}">
+    <view class="empty-icon">💝</view>
+    <text class="empty-title">还没有收藏配方</text>
+    <text class="empty-desc">去灵感流发现心仪的配色吧</text>
+    <button class="explore-btn" bindtap="goToExplore">
+      去探索配方
+    </button>
+  </view>
+
+  <!-- 详情弹窗 -->
+  <view class="detail-modal {{showDetail ? 'show' : ''}}" catchtap="closeDetail">
+    <view class="detail-content" catchtap="preventClose" wx:if="{{detailPalette}}">
+      <view class="detail-header">
+        <text class="detail-emoji">{{detailPalette.emoji}}</text>
+        <text class="detail-name">{{detailPalette.name}}</text>
+        <view class="detail-close" bindtap="closeDetail">×</view>
+      </view>
+
+      <view class="insight-section">
+        <view class="insight-block">
+          <text class="insight-label">💡 为什么这么配？</text>
+          <text class="insight-content">{{detailPalette.insight.why}}</text>
+        </view>
+
+        <view class="insight-block">
+          <text class="insight-label">✨ 搭配小贴士</text>
+          <text class="insight-content">{{detailPalette.insight.tips}}</text>
+        </view>
+      </view>
+
+      <view class="detail-actions">
+        <button class="action-btn danger" bindtap="removePalette">
+          取消收藏
+        </button>
+        <button class="action-btn primary" open-type="share" data-palette="{{detailPalette}}">
+          分享配方
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

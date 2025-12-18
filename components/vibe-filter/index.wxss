@@ -1,0 +1,60 @@
+/* Vibe Filter 氛围滤镜样式 */
+
+.vibe-filter {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: linear-gradient(
+    to bottom,
+    #F5F5F5 0%,
+    #F5F5F5 80%,
+    rgba(245, 245, 245, 0) 100%
+  );
+  padding: 24rpx 0 32rpx;
+}
+
+.filter-scroll {
+  width: 100%;
+}
+
+.filter-list {
+  display: flex;
+  padding: 0 32rpx;
+  gap: 20rpx;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 28rpx;
+  background-color: #FFFFFF;
+  border-radius: 40rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.filter-item.active {
+  background-color: #1A1A1A;
+  box-shadow: 0 4rpx 16rpx rgba(26, 26, 26, 0.2);
+}
+
+.filter-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.filter-label {
+  font-size: 26rpx;
+  color: #666666;
+  font-weight: 500;
+}
+
+.filter-item.active .filter-label {
+  color: #FFFFFF;
+}
+
+/* 点击效果 */
+.filter-item:active {
+  transform: scale(0.96);
+}

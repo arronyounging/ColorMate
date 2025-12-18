@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "我的收藏",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "backgroundColor": "#F5F5F5",
+  "usingComponents": {
+    "colormate-card": "../../components/colormate-card/index"
+  }
+}

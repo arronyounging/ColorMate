@@ -1,0 +1,118 @@
+<!-- AI 搭配室 Palette Studio -->
+<view class="container">
+  <!-- 未上传状态 -->
+  <view class="upload-section" wx:if="{{!uploadedImage && !generating}}">
+    <view class="upload-header">
+      <text class="upload-title">AI 搭配室</text>
+      <text class="upload-subtitle">上传你的单品，获取专属配色配方</text>
+    </view>
+
+    <view class="upload-area" bindtap="chooseImage">
+      <view class="upload-icon">📷</view>
+      <text class="upload-text">点击拍照或选择图片</text>
+      <text class="upload-hint">建议拍摄单件衣物，保持光线充足</text>
+    </view>
+
+    <!-- 示例提示 -->
+    <view class="tips-section">
+      <text class="tips-title">拍摄小技巧</text>
+      <view class="tips-list">
+        <view class="tip-item">
+          <text class="tip-icon">💡</text>
+          <text class="tip-text">自然光下拍摄，颜色更准确</text>
+        </view>
+        <view class="tip-item">
+          <text class="tip-icon">👕</text>
+          <text class="tip-text">平铺或悬挂，展示完整颜色</text>
+        </view>
+        <view class="tip-item">
+          <text class="tip-icon">🎯</text>
+          <text class="tip-text">单品为主，背景越简洁越好</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 生成中状态 -->
+  <view class="generating-section" wx:if="{{generating}}">
+    <view class="generating-preview">
+      <image class="preview-image" src="{{uploadedImage}}" mode="aspectFill" />
+      <view class="preview-overlay">
+        <view class="analyzing-ring">
+          <view class="ring-inner"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="generating-steps">
+      <view class="step-item {{currentStep >= 1 ? 'active' : ''}} {{currentStep > 1 ? 'done' : ''}}">
+        <view class="step-icon">{{currentStep > 1 ? '✓' : '🔍'}}</view>
+        <text class="step-text">正在提取色彩 DNA...</text>
+      </view>
+      <view class="step-item {{currentStep >= 2 ? 'active' : ''}} {{currentStep > 2 ? 'done' : ''}}">
+        <view class="step-icon">{{currentStep > 2 ? '✓' : '🧠'}}</view>
+        <text class="step-text">正在匹配色彩心理学逻辑...</text>
+      </view>
+      <view class="step-item {{currentStep >= 3 ? 'active' : ''}} {{currentStep > 3 ? 'done' : ''}}">
+        <view class="step-icon">{{currentStep > 3 ? '✓' : '🎨'}}</view>
+        <text class="step-text">正在构建「{{vibeText}}」场景...</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 结果展示 -->
+  <view class="result-section" wx:if="{{generatedPalette && !generating}}">
+    <view class="result-header">
+      <text class="result-title">你的专属配方</text>
+      <view class="retry-btn" bindtap="resetStudio">
+        <text class="retry-icon">↻</text>
+        <text class="retry-text">重新生成</text>
+      </view>
+    </view>
+
+    <!-- 原图预览 -->
+    <view class="original-preview">
+      <image class="original-image" src="{{uploadedImage}}" mode="aspectFit" />
+      <view class="original-label">你的单品</view>
+    </view>
+
+    <!-- 生成的配方卡 -->
+    <colormate-card
+      palette="{{generatedPalette}}"
+      animate="{{true}}"
+      bindcardtap="onCardTap"
+      bindcollectchange="onCollectChange"
+    />
+
+    <!-- 专家解读 -->
+    <view class="insight-panel">
+      <view class="insight-header">
+        <text class="insight-icon">💡</text>
+        <text class="insight-title">专家解读</text>
+      </view>
+
+      <view class="insight-block">
+        <text class="insight-label">为什么这么配？</text>
+        <text class="insight-content">{{generatedPalette.insight.why}}</text>
+      </view>
+
+      <view class="insight-block">
+        <text class="insight-label">避坑指南</text>
+        <text class="insight-content">{{generatedPalette.insight.tips}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn secondary" bindtap="resetStudio">
+        重新拍摄
+      </button>
+      <button class="action-btn primary" open-type="share">
+        分享配方
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部安全区 -->
+  <view class="safe-bottom"></view>
+</view>

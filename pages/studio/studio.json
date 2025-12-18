@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "AI 搭配室",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "backgroundColor": "#F5F5F5",
+  "usingComponents": {
+    "colormate-card": "../../components/colormate-card/index",
+    "color-bar": "../../components/color-bar/index"
+  }
+}

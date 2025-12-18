@@ -1,0 +1,70 @@
+<!-- ColorMate Card 颜伴卡组件 -->
+<!-- 核心视觉单元：上部色彩实验室(35%) + 下部视觉验证场(65%) -->
+<view class="colormate-card {{animateClass}}" bindtap="onCardTap">
+  <!-- A区：色彩实验室 The Lab -->
+  <view class="lab-section">
+    <view class="lab-bg">
+      <!-- 配方标题 -->
+      <view class="formula-header">
+        <text class="formula-emoji">{{palette.emoji}}</text>
+        <text class="formula-name">{{palette.name}}</text>
+      </view>
+
+      <!-- 动态比例色条 -->
+      <color-bar
+        colors="{{palette.colors}}"
+        bindcolorclick="onColorClick"
+      />
+
+      <!-- 色号标注 -->
+      <view class="color-labels">
+        <view
+          class="color-label"
+          wx:for="{{palette.colors}}"
+          wx:key="hex"
+        >
+          <view
+            class="color-dot"
+            style="background-color: {{item.hex}};"
+          ></view>
+          <view class="color-info">
+            <text class="color-name">{{item.name}}</text>
+            <text class="color-hex">{{item.hex}}</text>
+          </view>
+          <text class="color-ratio">{{item.ratio}}%</text>
+        </view>
+      </view>
+
+      <!-- 收藏按钮 -->
+      <view
+        class="collect-btn {{isCollected ? 'collected' : ''}}"
+        catchtap="onCollectTap"
+      >
+        <text class="collect-icon">{{isCollected ? '♥' : '♡'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- B区：视觉验证场 The Proof -->
+  <view class="proof-section">
+    <image
+      class="outfit-image"
+      src="{{palette.image || defaultImage}}"
+      mode="aspectFill"
+      lazy-load="{{true}}"
+      binderror="onImageError"
+    />
+    <!-- 图片加载占位 -->
+    <view class="image-placeholder" wx:if="{{!imageLoaded}}">
+      <view class="placeholder-colors">
+        <view
+          wx:for="{{palette.colors}}"
+          wx:key="hex"
+          class="placeholder-color"
+          style="background-color: {{item.hex}}; flex: {{item.ratio}};"
+        ></view>
+      </view>
+      <text class="placeholder-text">加载中...</text>
+    </view>
+  </view>
+</view>
