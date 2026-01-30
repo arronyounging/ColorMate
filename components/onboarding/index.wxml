@@ -1,0 +1,70 @@
+<!-- 新手引导 Onboarding -->
+<view class="onboarding {{show ? 'visible' : ''}}" catchtouchmove="preventScroll">
+  <view class="onboarding-content">
+    <!-- 步骤指示器 -->
+    <view class="step-dots">
+      <view class="dot {{currentStep >= 0 ? 'active' : ''}}"></view>
+      <view class="dot {{currentStep >= 1 ? 'active' : ''}}"></view>
+      <view class="dot {{currentStep >= 2 ? 'active' : ''}}"></view>
+    </view>
+
+    <!-- Step 0: 欢迎 -->
+    <view class="step {{currentStep === 0 ? 'current' : ''}}" wx:if="{{currentStep === 0}}">
+      <view class="step-visual">
+        <view class="welcome-colors">
+          <view class="w-color" style="background:#C4A484;"></view>
+          <view class="w-color" style="background:#6B8E9F;"></view>
+          <view class="w-color" style="background:#F5F5F5;"></view>
+        </view>
+      </view>
+      <text class="step-title">每天打开衣柜\n不知道穿什么？</text>
+      <text class="step-desc">ColorMate 帮你 10 秒找到穿搭配色公式\n从此告别选择困难症</text>
+      <button class="next-btn" bindtap="nextStep">开始探索</button>
+    </view>
+
+    <!-- Step 1: 核心功能——点击色块 -->
+    <view class="step {{currentStep === 1 ? 'current' : ''}}" wx:if="{{currentStep === 1}}">
+      <view class="step-visual">
+        <view class="demo-bar">
+          <view class="demo-segment main" style="background:#C4A484;">
+            <view class="tap-hint">
+              <view class="tap-circle"></view>
+              <text class="tap-text">点我</text>
+            </view>
+          </view>
+          <view class="demo-segment secondary" style="background:#6B8E9F;"></view>
+          <view class="demo-segment accent" style="background:#F5F5F5;"></view>
+        </view>
+      </view>
+      <text class="step-title">点击色块\n探索无限可能</text>
+      <text class="step-desc">看到喜欢的颜色？点击它！\n立刻展示这个颜色的 50 种搭配方案</text>
+      <button class="next-btn" bindtap="nextStep">下一步</button>
+    </view>
+
+    <!-- Step 2: AI 搭配室 -->
+    <view class="step {{currentStep === 2 ? 'current' : ''}}" wx:if="{{currentStep === 2}}">
+      <view class="step-visual">
+        <view class="demo-camera">
+          <text class="camera-icon">📷</text>
+          <text class="camera-arrow">→</text>
+          <view class="demo-card-mini">
+            <view class="mini-bar">
+              <view style="background:#9370DB; flex:6;"></view>
+              <view style="background:#FFB6C1; flex:3;"></view>
+              <view style="background:#F5F5F5; flex:1;"></view>
+            </view>
+            <text class="mini-label">你的专属配方</text>
+          </view>
+        </view>
+      </view>
+      <text class="step-title">拍一拍你的衣服\nAI 帮你开药方</text>
+      <text class="step-desc">有件难搭的衣服？拍照上传\nAI 自动分析颜色，生成专属配色方案</text>
+      <button class="next-btn primary" bindtap="finish">开始使用</button>
+    </view>
+
+    <!-- 跳过按钮 -->
+    <view class="skip-btn" bindtap="finish" wx:if="{{currentStep < 2}}">
+      <text>跳过</text>
+    </view>
+  </view>
+</view>

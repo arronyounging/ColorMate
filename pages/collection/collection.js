@@ -119,14 +119,14 @@ Page({
 
     if (palette) {
       return {
-        title: `${palette.emoji} ${palette.name} - 我收藏的穿搭配方`,
+        title: `${palette.emoji} 这个配色太绝了，我已经按这个搭了！`,
         path: `/pages/index/index?paletteId=${palette.id}`,
         imageUrl: palette.image || ''
       };
     }
 
     return {
-      title: 'ColorMate - 不再凭感觉，穿搭有配方',
+      title: '每天打开衣柜不知道穿什么？这个配色神器帮你 10 秒搞定',
       path: '/pages/index/index'
     };
   }

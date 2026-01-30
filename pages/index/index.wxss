@@ -284,3 +284,93 @@
 .share-btn::after {
   border: none;
 }
+
+/* 每日推荐 */
+.daily-tip {
+  display: flex;
+  align-items: center;
+  margin: 0 32rpx 16rpx;
+  padding: 20rpx 28rpx;
+  background: linear-gradient(135deg, #FFF8E1 0%, #FFF3E0 100%);
+  border-radius: 16rpx;
+  animation: tipSlideIn 0.4s ease;
+}
+
+@keyframes tipSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.daily-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.daily-text {
+  font-size: 24rpx;
+  color: #8D6E00;
+  font-weight: 500;
+}
+
+/* 详情弹窗标签区 */
+.insight-tags {
+  margin-bottom: 24rpx;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.tag {
+  display: inline-block;
+  padding: 10rpx 24rpx;
+  background-color: #F5F5F5;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.vibe-tag {
+  background-color: #FFF3E0;
+  color: #E65100;
+}
+
+/* 详情弹窗双按钮 */
+.detail-actions {
+  display: flex;
+  gap: 24rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 96rpx;
+  border-radius: 48rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.action-btn::after {
+  border: none;
+}
+
+.action-btn.secondary {
+  background-color: #F5F5F5;
+  color: #666666;
+}
+
+.action-btn.primary {
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+}

@@ -12,7 +12,14 @@ Page({
     generating: false, // 是否正在生成
     currentStep: 0, // 当前生成步骤
     generatedPalette: null, // 生成的配色方案
-    vibeText: '日常休闲' // 场景描述
+    vibeText: '日常休闲', // 场景描述
+    stepTexts: [
+      '',
+      '正在偷看你的衣柜...',
+      '帮你翻遍了时尚杂志...',
+      '灵感来了！配方出炉中...'
+    ],
+    resultToast: '' // 结果出炉时的惊喜文案
   },
 
   onShow() {
@@ -111,10 +118,26 @@ Page({
       insight: this.generateInsight(extractedColors)
     };
 
+    // 惊喜文案
+    const toasts = [
+      '你的专属配方来啦~',
+      '这组配色绝了！',
+      '时尚感拉满！',
+      '配方已解锁~'
+    ];
+
     this.setData({
       generating: false,
       currentStep: 4,
-      generatedPalette: palette
+      generatedPalette: palette,
+      resultToast: toasts[Math.floor(Math.random() * toasts.length)]
+    });
+
+    wx.vibrateShort({ type: 'heavy' });
+    wx.showToast({
+      title: this.data.resultToast,
+      icon: 'none',
+      duration: 2000
     });
   },
 
@@ -226,14 +249,14 @@ Page({
 
     if (palette) {
       return {
-        title: `${palette.emoji} ${palette.name} - 我的专属穿搭配方`,
+        title: `${palette.emoji} AI 帮我配了一套绝美穿搭色！你也来试试`,
         path: '/pages/studio/studio',
         imageUrl: palette.image || ''
       };
     }
 
     return {
-      title: 'ColorMate AI 搭配室 - 获取你的专属配色配方',
+      title: '拍一件衣服就能出整套配色方案，这也太神了吧',
       path: '/pages/studio/studio'
     };
   }

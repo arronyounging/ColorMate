@@ -4,13 +4,13 @@
   <view class="upload-section" wx:if="{{!uploadedImage && !generating}}">
     <view class="upload-header">
       <text class="upload-title">AI 搭配室</text>
-      <text class="upload-subtitle">上传你的单品，获取专属配色配方</text>
+      <text class="upload-subtitle">拍一件单品，AI 帮你配出一整套</text>
     </view>
 
     <view class="upload-area" bindtap="chooseImage">
       <view class="upload-icon">📷</view>
-      <text class="upload-text">点击拍照或选择图片</text>
-      <text class="upload-hint">建议拍摄单件衣物，保持光线充足</text>
+      <text class="upload-text">拍下那件不知道怎么搭的衣服</text>
+      <text class="upload-hint">10 秒出配方，告别选择困难</text>
     </view>
 
     <!-- 示例提示 -->
@@ -46,16 +46,16 @@
 
     <view class="generating-steps">
       <view class="step-item {{currentStep >= 1 ? 'active' : ''}} {{currentStep > 1 ? 'done' : ''}}">
-        <view class="step-icon">{{currentStep > 1 ? '✓' : '🔍'}}</view>
-        <text class="step-text">正在提取色彩 DNA...</text>
+        <view class="step-icon">{{currentStep > 1 ? '✓' : '👀'}}</view>
+        <text class="step-text">{{stepTexts[1]}}</text>
       </view>
       <view class="step-item {{currentStep >= 2 ? 'active' : ''}} {{currentStep > 2 ? 'done' : ''}}">
-        <view class="step-icon">{{currentStep > 2 ? '✓' : '🧠'}}</view>
-        <text class="step-text">正在匹配色彩心理学逻辑...</text>
+        <view class="step-icon">{{currentStep > 2 ? '✓' : '📖'}}</view>
+        <text class="step-text">{{stepTexts[2]}}</text>
       </view>
       <view class="step-item {{currentStep >= 3 ? 'active' : ''}} {{currentStep > 3 ? 'done' : ''}}">
-        <view class="step-icon">{{currentStep > 3 ? '✓' : '🎨'}}</view>
-        <text class="step-text">正在构建「{{vibeText}}」场景...</text>
+        <view class="step-icon">{{currentStep > 3 ? '✓' : '✨'}}</view>
+        <text class="step-text">{{stepTexts[3]}}</text>
       </view>
     </view>
   </view>
@@ -63,10 +63,10 @@
   <!-- 结果展示 -->
   <view class="result-section" wx:if="{{generatedPalette && !generating}}">
     <view class="result-header">
-      <text class="result-title">你的专属配方</text>
+      <text class="result-title">你的专属配方出炉了</text>
       <view class="retry-btn" bindtap="resetStudio">
         <text class="retry-icon">↻</text>
-        <text class="retry-text">重新生成</text>
+        <text class="retry-text">换一套</text>
       </view>
     </view>
 

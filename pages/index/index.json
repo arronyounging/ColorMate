@@ -4,6 +4,8 @@
   "backgroundColor": "#F5F5F5",
   "usingComponents": {
     "colormate-card": "../../components/colormate-card/index",
-    "vibe-filter": "../../components/vibe-filter/index"
+    "vibe-filter": "../../components/vibe-filter/index",
+    "onboarding": "../../components/onboarding/index",
+    "share-poster": "../../components/share-poster/index"
   }
 }

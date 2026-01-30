@@ -16,7 +16,7 @@
         bindcolorclick="onColorClick"
       />
 
-      <!-- 色号标注 -->
+      <!-- 色号标注（精简：只显示色名和比例） -->
       <view class="color-labels">
         <view
           class="color-label"
@@ -27,10 +27,7 @@
             class="color-dot"
             style="background-color: {{item.hex}};"
           ></view>
-          <view class="color-info">
-            <text class="color-name">{{item.name}}</text>
-            <text class="color-hex">{{item.hex}}</text>
-          </view>
+          <text class="color-name">{{item.name}}</text>
           <text class="color-ratio">{{item.ratio}}%</text>
         </view>
       </view>

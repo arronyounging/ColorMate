@@ -110,7 +110,7 @@ Component({
         if (success) {
           this.setData({ isCollected: true });
           wx.showToast({
-            title: '已收藏配方',
+            title: '配方已收入囊中~',
             icon: 'success',
             duration: 1500
           });

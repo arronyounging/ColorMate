@@ -4,8 +4,14 @@
   <view class="header">
     <view class="brand">
       <text class="brand-name">ColorMate</text>
-      <text class="brand-slogan">不再凭感觉，穿搭有配方</text>
+      <text class="brand-slogan">10 秒找到你的穿搭配色公式</text>
     </view>
+  </view>
+
+  <!-- 每日推荐提示 -->
+  <view class="daily-tip" wx:if="{{showDailyTip}}">
+    <text class="daily-icon">🌟</text>
+    <text class="daily-text">今日推荐 · {{dailyTipText}}</text>
   </view>
 
   <!-- 氛围滤镜 -->
@@ -58,7 +64,7 @@
 
     <!-- 没有更多 -->
     <view class="no-more" wx:if="{{!hasMore && palettes.length > 0}}">
-      <text>已展示全部配方</text>
+      <text>已展示全部配方 · 下拉刷新发现新搭配</text>
     </view>
 
     <!-- 空状态 -->
@@ -81,21 +87,47 @@
         <view class="detail-close" bindtap="closeDetail">×</view>
       </view>
 
+      <!-- 精简版解读 —— 标签化 -->
+      <view class="insight-tags">
+        <view class="tag-row">
+          <text class="tag">💡 {{detailPalette.colors[0].name}} + {{detailPalette.colors[1].name}}</text>
+          <text class="tag vibe-tag">{{vibeTagMap[detailPalette.vibe]}}</text>
+        </view>
+      </view>
+
       <view class="insight-section">
         <view class="insight-block">
-          <text class="insight-label">💡 为什么这么配？</text>
+          <text class="insight-label">为什么这么配？</text>
           <text class="insight-content">{{detailPalette.insight.why}}</text>
         </view>
 
         <view class="insight-block">
-          <text class="insight-label">✨ 搭配小贴士</text>
+          <text class="insight-label">避坑指南</text>
           <text class="insight-content">{{detailPalette.insight.tips}}</text>
         </view>
       </view>
 
-      <button class="share-btn" open-type="share" data-palette="{{detailPalette}}">
-        分享这个配方
-      </button>
+      <view class="detail-actions">
+        <button class="action-btn secondary" bindtap="showPoster">
+          生成海报
+        </button>
+        <button class="action-btn primary" open-type="share" data-palette="{{detailPalette}}">
+          分享给好友
+        </button>
+      </view>
     </view>
   </view>
+
+  <!-- 新手引导 -->
+  <onboarding
+    show="{{showOnboarding}}"
+    bindcomplete="onOnboardingComplete"
+  />
+
+  <!-- 分享海报 -->
+  <share-poster
+    show="{{showSharePoster}}"
+    palette="{{posterPalette}}"
+    bindclose="closePoster"
+  />
 </view>

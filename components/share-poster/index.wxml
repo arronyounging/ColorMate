@@ -1,0 +1,24 @@
+<!-- 分享海报生成组件 -->
+<view class="poster-modal {{show ? 'visible' : ''}}" catchtap="close" catchtouchmove="prevent">
+  <view class="poster-wrapper" catchtap="prevent">
+    <!-- Canvas 绘制区 -->
+    <canvas
+      type="2d"
+      id="posterCanvas"
+      class="poster-canvas"
+      style="width: 600rpx; height: 900rpx;"
+    ></canvas>
+
+    <!-- 操作按钮 -->
+    <view class="poster-actions">
+      <button class="poster-btn save" bindtap="saveToAlbum">
+        保存到相册
+      </button>
+      <button class="poster-btn share" open-type="share">
+        发给好友
+      </button>
+    </view>
+
+    <view class="poster-close" bindtap="close">×</view>
+  </view>
+</view>

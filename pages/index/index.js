@@ -7,6 +7,17 @@ const paletteData = require('../../data/palettes');
 const colorUtil = require('../../utils/color');
 const app = getApp();
 
+// 每日推荐文案池
+const dailyTips = [
+  '试试大地色系，秋冬永不出错',
+  '蓝色是最百搭的非黑白色',
+  '同色系穿搭最显高级',
+  '撞色不可怕，比例是关键',
+  '一身不超过三个颜色',
+  '用点缀色提亮整体造型',
+  '冷暖对比让穿搭更有层次'
+];
+
 Page({
   data: {
     palettes: [], // 当前展示的配色方案
@@ -19,12 +30,35 @@ Page({
     page: 1,
     pageSize: 6,
 
+    // 每日推荐
+    showDailyTip: false,
+    dailyTipText: '',
+
     // 详情弹窗
     showDetail: false,
-    detailPalette: null
+    detailPalette: null,
+    vibeTagMap: {
+      chill: '☕ 日常',
+      pro: '💼 职场',
+      date: '💕 约会',
+      art: '🎨 艺术'
+    },
+
+    // 新手引导
+    showOnboarding: false,
+
+    // 分享海报
+    showSharePoster: false,
+    posterPalette: null
   },
 
   onLoad(options) {
+    // 检查是否需要新手引导
+    this.checkOnboarding();
+
+    // 显示每日推荐
+    this.showDailyRecommend();
+
     // 处理 URL 参数（如从分享链接进入）
     if (options.paletteId) {
       this.handleSharedPalette(options.paletteId);
@@ -52,11 +86,45 @@ Page({
     }
   },
 
+  // 检查是否需要显示新手引导
+  checkOnboarding() {
+    try {
+      const hasOnboarded = wx.getStorageSync('hasOnboarded');
+      if (!hasOnboarded) {
+        this.setData({ showOnboarding: true });
+      }
+    } catch (e) {
+      // 存储读取失败，不显示引导
+    }
+  },
+
+  // 新手引导完成
+  onOnboardingComplete() {
+    this.setData({ showOnboarding: false });
+    try {
+      wx.setStorageSync('hasOnboarded', true);
+    } catch (e) {
+      // 静默失败
+    }
+  },
+
+  // 每日推荐逻辑
+  showDailyRecommend() {
+    const today = new Date().toDateString();
+    // 用日期做种子，每天推荐不同内容
+    const seed = today.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+    const tipIndex = seed % dailyTips.length;
+
+    this.setData({
+      showDailyTip: true,
+      dailyTipText: dailyTips[tipIndex]
+    });
+  },
+
   // 处理分享链接中的配色方案
   handleSharedPalette(paletteId) {
     const palette = paletteData.getPaletteById(paletteId);
     if (palette) {
-      // 显示该配色方案的详情
       setTimeout(() => {
         this.setData({
           showDetail: true,
@@ -72,17 +140,18 @@ Page({
 
     this.setData({ loading: true });
 
-    // 短延迟确保 UI 响应（实际项目接入 API 后可移除）
     setTimeout(() => {
       let allPalettes;
 
-      // 根据筛选条件获取数据
       if (this.data.exploreColor) {
-        // 色彩探索模式
         allPalettes = paletteData.getColorVariations(this.data.exploreColor.hex);
       } else {
-        // 普通筛选模式
         allPalettes = paletteData.filterByVibe(this.data.currentVibe);
+      }
+
+      // 下拉刷新时随机打乱顺序
+      if (reset && this.data.refreshing) {
+        allPalettes = this.shuffleWithSeed(allPalettes);
       }
 
       const page = reset ? 1 : this.data.page;
@@ -100,11 +169,20 @@ Page({
     }, 100);
   },
 
+  // 随机打乱数组（每次刷新不同顺序）
+  shuffleWithSeed(arr) {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  },
+
   // 氛围筛选变化
   onVibeChange(e) {
     const { value } = e.detail;
 
-    // 清除色彩探索状态
     this.setData({
       currentVibe: value,
       exploreColor: null,
@@ -114,7 +192,6 @@ Page({
 
     this.loadPalettes(true);
 
-    // 显示筛选反馈
     const vibeLabels = paletteData.vibeLabels;
     wx.showToast({
       title: `切换到${vibeLabels[value]}`,
@@ -130,13 +207,12 @@ Page({
     this.setData({
       exploreColor: color,
       showExploreToast: true,
-      currentVibe: 'all', // 重置筛选
+      currentVibe: 'all',
       page: 1
     });
 
     this.loadPalettes(true);
 
-    // 3秒后隐藏提示
     setTimeout(() => {
       this.setData({ showExploreToast: false });
     }, 3000);
@@ -168,15 +244,25 @@ Page({
     this.setData({ showDetail: false });
   },
 
-  // 防止详情内容点击冒泡
-  preventClose() {
-    // 空函数，阻止事件冒泡
+  // 阻止事件冒泡
+  preventClose() {},
+
+  // 显示海报
+  showPoster() {
+    this.setData({
+      showSharePoster: true,
+      posterPalette: this.data.detailPalette
+    });
+  },
+
+  // 关闭海报
+  closePoster() {
+    this.setData({ showSharePoster: false });
   },
 
   // 收藏状态变化
   onCollectChange(e) {
-    const { palette, isCollected } = e.detail;
-    console.log('收藏状态变化:', palette.name, isCollected);
+    // 收藏状态已在组件内处理
   },
 
   // 下拉刷新
@@ -198,14 +284,14 @@ Page({
 
     if (palette) {
       return {
-        title: `${palette.emoji} ${palette.name} - 你的穿搭配方`,
+        title: `${palette.emoji} 这个穿搭配方绝了！朋友都问我怎么搭的`,
         path: `/pages/index/index?paletteId=${palette.id}`,
         imageUrl: palette.image || ''
       };
     }
 
     return {
-      title: 'ColorMate - 不再凭感觉，穿搭有配方',
+      title: '每天打开衣柜不知道穿什么？这个配色神器帮你 10 秒搞定',
       path: '/pages/index/index'
     };
   },
@@ -213,7 +299,7 @@ Page({
   // 分享到朋友圈
   onShareTimeline() {
     return {
-      title: 'ColorMate - 你的口袋色彩配方库',
+      title: '穿搭配色不用想，打开就有现成配方',
       query: ''
     };
   }

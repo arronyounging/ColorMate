@@ -3,7 +3,8 @@
   <!-- 页面标题 -->
   <view class="header">
     <text class="title">我的配方库</text>
-    <text class="subtitle">收藏的配色方案 ({{collections.length}})</text>
+    <text class="subtitle" wx:if="{{collections.length > 0}}">已收藏 {{collections.length}} 个配方，穿搭灵感随手翻</text>
+    <text class="subtitle" wx:else>收藏的配方会出现在这里</text>
   </view>
 
   <!-- 收藏列表 -->
@@ -34,10 +35,10 @@
   <!-- 空状态 -->
   <view class="empty-state" wx:if="{{collections.length === 0}}">
     <view class="empty-icon">💝</view>
-    <text class="empty-title">还没有收藏配方</text>
-    <text class="empty-desc">去灵感流发现心仪的配色吧</text>
+    <text class="empty-title">你的配方库还空着呢~</text>
+    <text class="empty-desc">看到心仪的配色，双击卡片就能收藏哦</text>
     <button class="explore-btn" bindtap="goToExplore">
-      去探索配方
+      去发现好看的配方
     </button>
   </view>
 
